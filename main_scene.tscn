@@ -6,5 +6,5 @@
 script = ExtResource("1_bwaxt")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(0.999999, -0.000331553, -0.00160569, -0.000331552, -1, 5.32371e-07, -0.00160569, 2.80377e-13, -0.999999, 2.62273, 1.31599, -3.35836)
+fov = 126.563

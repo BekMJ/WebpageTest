@@ -41,7 +41,7 @@ func load_html_data():
 	# Parse the raw_text directly (no JSON.stringify)
 	var parse_error = json_parser.parse(raw_text)
 	if parse_error == OK:
-		var html_data = json_parser.data
+		html_data = json_parser.data
 		# Now html_data should be the array of objects from your file
 		print(html_data)
 	else:
@@ -93,24 +93,22 @@ func create_quad(
 	meltdown_shader_res: Shader,
 	screenshot_texture: Texture2D
 ) -> MeshInstance3D:
-	# Scale factor to convert pixel coords to Godot 3D units
+	# 1) Basic scaling from pixels to Godot 3D units
 	var scale_factor = 0.01
 	var pos_x = x * scale_factor
 	var pos_y = y * scale_factor
 	var size_w = w * scale_factor
 	var size_h = h * scale_factor
 
-	# Use SurfaceTool to build a flat rectangle
+	# 2) SurfaceTool to create a quad with UV(0..1, 0..1)
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
-	# Four corners in 3D space
 	var v1 = Vector3(pos_x, pos_y, 0)
 	var v2 = Vector3(pos_x + size_w, pos_y, 0)
 	var v3 = Vector3(pos_x + size_w, pos_y + size_h, 0)
 	var v4 = Vector3(pos_x, pos_y + size_h, 0)
 
-	# Assign UVs for a simple 0..1 mapping
 	st.set_uv(Vector2(0, 0))
 	st.add_vertex(v1)
 
@@ -135,33 +133,49 @@ func create_quad(
 	var mesh_instance = MeshInstance3D.new()
 	mesh_instance.mesh = array_mesh
 
-	# Rotate so the quad faces up if camera is above (looking down -Z)
-	mesh_instance.transform.origin = Vector3(0, 0, -5)
-
-
-	# Create a ShaderMaterial for meltdown
+	# 3) Create a ShaderMaterial
 	var mat = ShaderMaterial.new()
 	mat.shader = meltdown_shader_res
-	mat.set_shader_param("albedo_tex", screenshot_texture)
+	mat.set_shader_parameter("albedo_tex", screenshot_texture)
 
-	# Assign the material to the mesh
+	# 4) The critical part: set uv1_offset/scale
+	var screen_w = float(screenshot_texture.get_width())
+	var screen_h = float(screenshot_texture.get_height())
+
+	var offset_u = x / screen_w
+	var offset_v = y / screen_h
+	var scale_u  = w / screen_w
+	var scale_v  = h / screen_h
+
+	mat.set_shader_parameter("uv_offset", Vector2(offset_u, offset_v))
+	mat.set_shader_parameter("uv_scale", Vector2(scale_u, scale_v))
+
+
+	# 5) Apply material & position
 	mesh_instance.set_surface_override_material(0, mat)
+
+	# For a camera at (0,0,5) looking -Z, place the quad near (0,0,0)
+	mesh_instance.transform.origin = Vector3(0, 0, 0)
 
 	return mesh_instance
 
 
+
 func _process(delta: float) -> void:
-	# If meltdown is active, animate "melt_amount" from 0 to 1
+	# Check if the user just pressed the meltdown key
+	if Input.is_action_just_pressed("start_meltdown"):
+		meltdown_active = true
+		meltdown_elapsed = 0.0  # Reset the timer if you want
+
 	if meltdown_active:
 		meltdown_elapsed += delta
-		var meltdown_factor = meltdown_elapsed / meltdown_duration
+		var factor = meltdown_elapsed / meltdown_duration
+		if factor > 1.0:
+			factor = 1.0
+			meltdown_active = false  # optional: stop meltdown once fully melted
 
-		if meltdown_factor >= 1.0:
-			meltdown_factor = 1.0
-			meltdown_active = false  # optional: stop updating once fully melted
-
-		# Update the shader param on each quad
-		for shape in created_meshes:
-			var mat = shape.get_surface_override_material(0)
+		# Update meltdown shader param on each quad
+		for mesh in created_meshes:
+			var mat = mesh.get_surface_override_material(0)
 			if mat and mat is ShaderMaterial:
-				mat.set_shader_param("melt_amount", meltdown_factor)
+				mat.set_shader_parameter("melt_amount", factor)
