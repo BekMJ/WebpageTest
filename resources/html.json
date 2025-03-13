@@ -1,0 +1,58 @@
+[
+    {
+        "x": 84,
+        "y": 8,
+        "width": 50,
+        "height": 50,
+        "src": "https://en.wikipedia.org/static/images/icons/wikipedia.png"
+    },
+    {
+        "x": 144,
+        "y": 15,
+        "width": 120,
+        "height": 18,
+        "src": "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en.svg"
+    },
+    {
+        "x": 146,
+        "y": 38,
+        "width": 117,
+        "height": 13,
+        "src": "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en.svg"
+    },
+    {
+        "x": 1455,
+        "y": 95,
+        "width": 19,
+        "height": 19,
+        "src": "https://upload.wikimedia.org/wikipedia/commons/2/20/CloseWindow19x19.png"
+    },
+    {
+        "x": 1136,
+        "y": 262,
+        "width": 20,
+        "height": 19,
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e7/Cscr-featured.svg/20px-Cscr-featured.svg.png"
+    },
+    {
+        "x": 1164,
+        "y": 261,
+        "width": 20,
+        "height": 20,
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/1/1b/Semi-protection-shackle.svg/20px-Semi-protection-shackle.svg.png"
+    },
+    {
+        "x": 1192,
+        "y": 264,
+        "width": 20,
+        "height": 15,
+        "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Sound-icon.svg/20px-Sound-icon.svg.png"
+    },
+    {
+        "x": 912,
+        "y": 373,
+        "width": 290,
+        "height": 290,
+        "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/290px-The_Earth_seen_from_Apollo_17.jpg"
+    }
+]

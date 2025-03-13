@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmu1u5d7vc4hy"]
+
+[ext_resource type="Script" uid="uid://dviuyyaawf4ca" path="res://Melting_Manager.gd" id="1_bwaxt"]
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_bwaxt")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
